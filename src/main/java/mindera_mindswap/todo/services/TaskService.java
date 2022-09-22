@@ -2,7 +2,7 @@ package mindera_mindswap.todo.services;
 
 import mindera_mindswap.todo.dto.UpdateTaskDto;
 import mindera_mindswap.todo.models.ITask;
-import mindera_mindswap.todo.models.Task;
+import mindera_mindswap.todo.models.Event;
 import mindera_mindswap.todo.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -21,16 +21,16 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task save(Task task){
+    public Event save(Event task){
        return taskRepository.save(task);
     }
 
-    public List<Task> list(){
+    public List<Event> list(){
         return taskRepository.findAll();
     }
 
-    public Task update(UpdateTaskDto updateTaskDto) throws Exception{
-        Optional<Task> task = taskRepository.findById(updateTaskDto.getId());
+    public Event update(UpdateTaskDto updateTaskDto) throws Exception{
+        Optional<Event> task = taskRepository.findById(updateTaskDto.getId());
         if(!task.isPresent()){throw new ChangeSetPersister.NotFoundException();}
         task.get().setDone(updateTaskDto.isDone());
         return taskRepository.save(task.get());
