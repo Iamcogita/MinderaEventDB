@@ -1,48 +1,40 @@
 package mindera_mindswap.todo.controllers;
 
-import mindera_mindswap.todo.dto.CreateTaskDto;
-import mindera_mindswap.todo.dto.DeleteTaskDto;
-import mindera_mindswap.todo.dto.UpdateTaskDto;
+import mindera_mindswap.todo.dto.CreateEventDto;
+import mindera_mindswap.todo.dto.UpdateEventDto;
 import mindera_mindswap.todo.models.Event;
-import mindera_mindswap.todo.services.TaskService;
+import mindera_mindswap.todo.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/tasks")
+@RequestMapping("/events")
 public class Events {
 
-    private final TaskService taskService;
+    private final EventService eventService;
 
     @Autowired
-    public Events(TaskService taskService) {
-        this.taskService = taskService;
+    public Events(EventService eventService) {
+        this.eventService = eventService;
     }
 
     @GetMapping
     public List<Event> list(){
-       return taskService.list();
+       return eventService.list();
     }
 
     @PostMapping
-    public Event create(@RequestBody CreateTaskDto createTaskDto){
-        Event task = new Event(createTaskDto.getName());
-        return taskService.save(task);
-    }
-
-    @DeleteMapping
-    public void delete(@RequestBody DeleteTaskDto deleteTaskDto){
-        taskService.delete(deleteTaskDto);
+    public Event create(@RequestBody CreateEventDto Dto){
+        Event event = new Event(Dto.getTitle() , Dto.getType(), Dto.getDate(), Dto.getStartingTime());
+        return eventService.save(event);
     }
 
     @PutMapping
-    public Event update(@RequestBody UpdateTaskDto updateTaskDto) throws Exception {
-        return taskService.update(updateTaskDto);
+    public Event update(@RequestBody UpdateEventDto Dto) throws Exception {
+        return eventService.update(Dto);
     }
 
-    @DeleteMapping("/clear")
-    public void clear(){taskService.clearAll();}
 
 }
