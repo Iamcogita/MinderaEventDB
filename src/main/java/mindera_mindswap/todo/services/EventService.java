@@ -30,8 +30,8 @@ public class EventService {
 
     public Event update(UpdateEventDto Dto) throws Exception{
         Optional<Event> event = eventRepository.findById(Dto.getId());
-        if(!event.isPresent()){throw new ChangeSetPersister.NotFoundException();}
-        event.get().setDone(Dto.isDone());
+        if(event.isEmpty()){throw new ChangeSetPersister.NotFoundException();}
+        event.get().setState(Dto.getState());
         return eventRepository.save(event.get());
     }
 
